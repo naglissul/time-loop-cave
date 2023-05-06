@@ -1,6 +1,6 @@
 ;(function () {
     const canvas = document.querySelector('canvas')
-    canvas.width = CANVAS_WIDTH
-    canvas.height = CANVAS_HEIGHT
+    canvas.width = ACTUAL_CANVAS_WIDTH
+    canvas.height = ACTUAL_CANVAS_HEIGHT
     new Game(canvas)
 })()

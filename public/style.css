@@ -6,4 +6,5 @@ body {
 canvas {
     border: solid 1px;
     margin-top: 20px;
+    image-rendering: pixelated;
 }

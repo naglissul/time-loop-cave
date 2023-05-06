@@ -1,8 +1,8 @@
 'use strict'
-class Enemy extends GameObject {
+class LiveTile extends GameObject {
     constructor(x, y) {
         super(x, y)
-        this.objId = 'ENEMY'
+        this.objId = 'LIVETILE'
     }
 
     tick(delta) {}

@@ -3,7 +3,7 @@
 class Level1 extends GameState {
     constructor(handler) {
         super(handler)
-        this.gameObjects.push(new Player(100, 100))
+        this.gameObjects.push(new Player(10, 10))
     }
 
     tick(delta) {
@@ -22,10 +22,7 @@ class Level1 extends GameState {
         this.gameObjects.forEach((obj) => {
             if (obj.objId === 'PLAYER') {
                 if (keyCode === 'ArrowUp') {
-                    obj.velY = -100
-                }
-                if (keyCode === 'ArrowDown') {
-                    obj.velY = 100
+                    obj.velY = -200
                 }
                 if (keyCode === 'ArrowRight') {
                     obj.velX = 100
@@ -39,12 +36,6 @@ class Level1 extends GameState {
     keyReleased(keyCode) {
         this.gameObjects.forEach((obj) => {
             if (obj.objId === 'PLAYER') {
-                if (keyCode === 'ArrowUp') {
-                    obj.velY = 0
-                }
-                if (keyCode === 'ArrowDown') {
-                    obj.velY = 0
-                }
                 if (keyCode === 'ArrowRight') {
                     obj.velX = 0
                 }

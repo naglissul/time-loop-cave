@@ -7,6 +7,9 @@ class Game {
     constructor(canvas) {
         this.#ctx = canvas.getContext('2d')
 
+        this.#ctx.imageSmoothingEnabled = false
+        this.#ctx.scale(SCALE_FACTOR, SCALE_FACTOR)
+
         this.#stateHandler = new StateHandler()
         this.#initListeners()
 

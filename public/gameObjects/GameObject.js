@@ -8,7 +8,7 @@ class GameObject {
     constructor(x, y) {
         this._x = x
         this._y = y
-        this._velX = 100
+        this._velX = 0
         this._velY = 0
     }
 
