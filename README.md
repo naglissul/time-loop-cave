@@ -32,3 +32,5 @@ More info can be found on the [official website](https://npw.lt/#/code)
 -   Development and Releases - GitHub
 
 ## More about the program
+
+[Here](https://github.com/naglissul/dev-standards/tree/main/Computer%202d%20web%20game%20template) you can find a template for 2d web game, if you want to make one yourself :)
