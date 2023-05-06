@@ -1,14 +1,14 @@
-# Game Title
+# Time Loop Cave
 
-Example description of game GAME TITLE
+Singleplayer web game where the player has to collect a certain amount of coins by defeating enemys in order to escape the mysterious cave.
 
-Use this link to play: [example.web.app](https://example.com)
+Use this link to play: [example.web.app](https://example.web.app)
 
-© Copyright credits
+© Naglis Šuliokas 2023
 
 ## About
 
-Current version: v0.0.1
+Current version: v0.0.0
 
 Check the [CHANGELOG.md](/CHANGELOG.md) for more version descriptions.
 
@@ -17,7 +17,7 @@ You can also find some useless pseudo-legal docs here:
 -   [TERMS AND CONDITIONS](/TERMSANDCONDITIONS.md)
 -   [PRIVACY POLICY](/PRIVACYPOLICY.md)
 
-More info can be found on the [official website](https://example.com)
+More info can be found on the [official website](https://npw.lt/#/code)
 
 ## Tech
 
@@ -28,6 +28,7 @@ More info can be found on the [official website](https://example.com)
 
 ## Deployment
 
+-   Firebase hosting
 -   Development and Releases - GitHub
 
 ## More about the program
