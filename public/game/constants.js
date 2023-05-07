@@ -1,7 +1,7 @@
 const ACTUAL_CANVAS_HEIGHT = 576
 const ACTUAL_CANVAS_WIDTH = 1024
 
-const SCALE_FACTOR = 4 // If devicePixelRatio is 1.25, every pixel will be depicted as 5px x 5px square
+const SCALE_FACTOR = 4 / devicePixelRatio // If devicePixelRatio is 1.25, every pixel will be depicted as 5px x 5px square
 
 const CANVAS_HEIGHT = ACTUAL_CANVAS_HEIGHT / SCALE_FACTOR
 const CANVAS_WIDTH = ACTUAL_CANVAS_WIDTH / SCALE_FACTOR

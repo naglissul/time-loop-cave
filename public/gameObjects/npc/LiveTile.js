@@ -6,5 +6,8 @@ class LiveTile extends GameObject {
     }
 
     tick(delta) {}
-    render(ctx) {}
+    render(ctx) {
+        ctx.fillStyle = 'brown'
+        ctx.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE)
+    }
 }

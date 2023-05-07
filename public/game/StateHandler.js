@@ -3,7 +3,7 @@ class StateHandler {
     #currState
 
     constructor() {
-        this.setState('LEVEL1')
+        this.setState('MAINMENU')
     }
 
     tick(delta) {

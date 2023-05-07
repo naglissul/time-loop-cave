@@ -7,8 +7,16 @@ class GameOver extends GameState {
 
     tick(delta) {}
 
-    render(ctx) {}
+    render(ctx) {
+        ctx.fillStyle = 'black'
+        ctx.textAlign = 'center'
+        ctx.fillText('Game Over', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2)
+    }
 
-    keyPressed(keyCode) {}
+    keyPressed(keyCode) {
+        if (keyCode === 'Enter') {
+            this.handler.setState('WIN')
+        }
+    }
     keyReleased(keyCode) {}
 }
