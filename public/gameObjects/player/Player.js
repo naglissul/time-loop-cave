@@ -4,13 +4,20 @@ class Player extends GameObject {
         super(x, y)
         this.levelHandler = levelHandler
         this.objId = 'PLAYER'
-        this.text = 'not colliding'
+        this.shouldJump = false
+        this.recoveringTime = 0
     }
 
     tick(delta) {
+        this.shouldJump = false
         // Move
         this.x += this.velX * delta
         this.y += this.velY * delta
+
+        //Recovering timer
+        if (this.recoveringTime > 0) {
+            this.recoveringTime -= delta
+        }
 
         // Gravity
         this.velY += 10
@@ -19,6 +26,7 @@ class Player extends GameObject {
         if (this.y > CANVAS_HEIGHT - PLAYER_HEIGHT) {
             this.velY = 0
             this.y = CANVAS_HEIGHT - PLAYER_HEIGHT
+            this.shouldJump = this.levelHandler.jumpActivated && true
         }
         if (this.y < 0) {
             this.velY = -this.velY
@@ -32,8 +40,27 @@ class Player extends GameObject {
         }
 
         // Tile collision
-        this.levelHandler.gameObjects.forEach((obj) => {
-            if (obj.objId === 'LIVETILE') {
+        // FIXME: Collision issues for sometimes enemy and food
+        this.levelHandler.gameObjects.forEach((obj, index) => {
+            if (obj.objId === 'ENEMY') {
+                if (
+                    GameLogic.isRectsColliding(
+                        this.x,
+                        this.y,
+                        TILE_SIZE,
+                        TILE_SIZE,
+                        obj.x,
+                        obj.y,
+                        PLAYER_WIDTH,
+                        PLAYER_HEIGHT
+                    ) &&
+                    this.recoveringTime <= 0
+                ) {
+                    this.levelHandler.lifeCount--
+                    this.recoveringTime = 5
+                }
+            }
+            if (obj.objId === 'TILE') {
                 if (
                     GameLogic.isRectsColliding(
                         this.x,
@@ -59,6 +86,8 @@ class Player extends GameObject {
                     if (this.text === 'top') {
                         this.velY = 0
                         this.y = obj.y - PLAYER_HEIGHT
+                        this.shouldJump =
+                            this.levelHandler.jumpActivated && true
                     }
                     if (this.text === 'bottom') {
                         this.velY = Math.abs(this.velY)
@@ -70,16 +99,77 @@ class Player extends GameObject {
                         this.x = obj.x - PLAYER_WIDTH
                     }
                 }
-            } else {
-                this.text = 'not colliding'
+            }
+            if (obj.objId === 'COIN') {
+                if (
+                    GameLogic.isRectsColliding(
+                        obj.x,
+                        obj.y,
+                        PLAYER_WIDTH,
+                        PLAYER_HEIGHT,
+                        this.x,
+                        this.y,
+                        TILE_SIZE,
+                        TILE_SIZE
+                    )
+                ) {
+                    this.levelHandler.coinCount += 1
+                    this.levelHandler.deleteObject(index)
+                }
+            }
+            if (obj.objId === 'FOOD') {
+                if (
+                    GameLogic.isRectsColliding(
+                        this.x,
+                        this.y,
+                        TILE_SIZE,
+                        TILE_SIZE,
+                        obj.x,
+                        obj.y,
+                        PLAYER_WIDTH,
+                        PLAYER_HEIGHT
+                    )
+                ) {
+                    if (obj.isHidingCoin) {
+                        obj.x = GameLogic.getRandomGridX()
+                        obj.y = GameLogic.getRandomGridY()
+                        obj.setState('COIN')
+                    } else {
+                        this.levelHandler.deleteObject(index)
+                    }
+                }
             }
         })
+
+        // Jump
+        if (this.shouldJump) {
+            this.velY = -200
+        }
     }
 
     render(ctx) {
-        ctx.fillStyle = 'blue'
-        ctx.fillText(this.text, 30, 20)
-
+        if (this.recoveringTime > 0) {
+            ctx.fillStyle = 'lightblue'
+        } else {
+            ctx.fillStyle = 'blue'
+        }
         ctx.fillRect(this.x, this.y, PLAYER_WIDTH, PLAYER_HEIGHT)
+
+        // Tile place
+        ctx.strokeRect(
+            Math.floor((this.x + PLAYER_WIDTH / 2) / TILE_SIZE) * TILE_SIZE,
+            Math.floor((this.y + PLAYER_HEIGHT / 2) / TILE_SIZE - 1) *
+                TILE_SIZE,
+            TILE_SIZE,
+            TILE_SIZE
+        )
+
+        ctx.fillStyle = 'black'
+        ctx.strokeRect(
+            this.x,
+            this.y,
+            (PLAYER_WIDTH * this.recoveringTime) / 5,
+            1
+        )
     }
 }

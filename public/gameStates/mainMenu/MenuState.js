@@ -1,12 +1,9 @@
 'use strict'
 
 // abstract class
-class GameState {
-    handler
-    gameObjects
-
-    constructor(handler) {
-        this.handler = handler
+class MenuState {
+    constructor(menuHandler) {
+        this.menuHandler = menuHandler
         this.gameObjects = new Array()
     }
 

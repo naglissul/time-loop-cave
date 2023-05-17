@@ -45,7 +45,6 @@ class Game {
     }
 
     #exit(e) {
-        this.running = false
         removeEventListener('keydown', (event) =>
             this.#stateHandler.keyPressed(event.code)
         )
