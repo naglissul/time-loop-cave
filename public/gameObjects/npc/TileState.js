@@ -1,18 +1,17 @@
 'use strict'
 class TileState extends LiveTileState {
-    #maxTime
+    #timer
 
     constructor(tileHandler) {
         super(tileHandler)
         this.x = tileHandler.x
         this.y = tileHandler.y
-        this.#maxTime = 10
+        this.#timer = new Timer(TILE_TIME, () =>
+            this.tileHandler.setState('ENEMY')
+        )
     }
     tick(delta) {
-        this.timePast += delta
-        if (this.timePast >= this.#maxTime) {
-            this.tileHandler.setState('ENEMY')
-        }
+        this.#timer.updateTime(delta)
     }
     render(ctx) {
         ctx.fillStyle = 'maroon'
@@ -21,7 +20,7 @@ class TileState extends LiveTileState {
         ctx.strokeRect(
             this.x,
             this.y,
-            (TILE_SIZE * this.timePast) / this.#maxTime,
+            (TILE_SIZE * this.#timer.getTime()) / this.#timer.getTimePeriod(),
             1
         )
     }

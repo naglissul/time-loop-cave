@@ -2,9 +2,15 @@
 class Select extends MenuState {
     constructor(menuHandler) {
         super(menuHandler)
-        this.gameObjects.push(new Selection('Play', 50, 50, this))
-        this.gameObjects.push(new Selection('Options', 50, 100, this))
-        this.gameObjects.push(new Selection('Help', 50, 120, this))
+        this.gameObjects.push(
+            new Selection('Play', CANVAS_WIDTH / 2, 100, this)
+        )
+        this.gameObjects.push(
+            new Selection('Options', CANVAS_WIDTH / 2, 120, this)
+        )
+        this.gameObjects.push(
+            new Selection('Help', CANVAS_WIDTH / 2, 140, this)
+        )
         this.activeIndex = 0
         this.gameObjects[this.activeIndex].isActive = true
     }
@@ -14,7 +20,7 @@ class Select extends MenuState {
     render(ctx) {
         ctx.fillStyle = 'black'
         ctx.textAlign = 'center'
-        ctx.fillText('Main Menu', CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2)
+        ctx.fillText('Time Loop Cave', CANVAS_WIDTH / 2, 70)
         this.gameObjects.forEach((obj) => {
             obj.render(ctx)
         })

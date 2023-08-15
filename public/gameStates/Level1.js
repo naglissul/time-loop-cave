@@ -2,33 +2,29 @@
 
 class Level1 extends GameState {
     liveTileObjects
-    #dumpTileCount
+    #dumpTileTimer
     constructor(handler) {
         super(handler)
         this.gameObjects.push(new Player(10, 10, this))
         this.gameObjects.push(new CoinCounter(300, 20, this))
         this.gameObjects.push(new LifeCounter(40, 20, this))
-        this.#dumpTileCount = 1000 //10 every 100 frames
+        this.dumpTileCount = INIT_TILE_DUMP_COUNT
         this.coinCount = 0
         this.lifeCount = 3
         this.jumpActivated = false
+
+        this.#dumpTileTimer = new Timer(INIT_TILE_DUMP_TIME, () => {
+            if (this.dumpTileCount > 0) {
+                const [x, y] = GameLogic.getRandomGridPoint()
+                this.gameObjects.push(new LiveTile(x, y, this, true))
+                this.dumpTileCount--
+            }
+        })
     }
 
     tick(delta) {
-        if (this.#dumpTileCount > 0) {
-            if (this.#dumpTileCount % 100 === 0) {
-                this.gameObjects.push(
-                    new LiveTile(
-                        GameLogic.getRandomGridX(),
-                        GameLogic.getRandomGridY(),
-                        this,
-                        true
-                    )
-                )
-            }
+        this.#dumpTileTimer.updateTime(1)
 
-            this.#dumpTileCount--
-        }
         if (this.coinCount >= 10) {
             this.handler.setState('WIN')
         }

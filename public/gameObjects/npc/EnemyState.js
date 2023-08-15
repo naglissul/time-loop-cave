@@ -1,32 +1,29 @@
 'use strict'
 
 class EnemyState extends LiveTileState {
-    #maxTime
-    #moveTimePast
-    #maxMoveTime
+    #lifeTimer
+    #moveTimer
 
     constructor(tileHandler) {
         super(tileHandler)
         this.x = tileHandler.x
         this.y = tileHandler.y
-        this.#maxTime = 3
-        this.#maxMoveTime = 0.5
-        this.#moveTimePast = 0
-    }
-    tick(delta) {
-        this.timePast += delta
-        this.#moveTimePast += delta
-        if (this.timePast >= this.#maxTime) {
+
+        this.#lifeTimer = new Timer(ENEMY_LIFE_TIME, () => {
             this.tileHandler.x = this.x
             this.tileHandler.y = this.y
             this.tileHandler.setState('FOOD')
-        }
-        if (this.#moveTimePast >= this.#maxMoveTime) {
-            this.#moveTimePast = 0
-            this.x = GameLogic.getRandomEnemyMoveX(this.x)
-            this.y = GameLogic.getRandomEnemyMoveY(this.y)
-        }
+        })
+        this.#moveTimer = new Timer(ENEMY_MOVE_TIME, () => {
+            ;[this.x, this.y] = GameLogic.getRandomEnemyMove([this.x, this.y])
+        })
     }
+
+    tick(delta) {
+        this.#lifeTimer.updateTime(delta)
+        this.#moveTimer.updateTime(delta)
+    }
+
     render(ctx) {
         ctx.fillStyle = 'crimson'
         ctx.fillRect(this.x, this.y, TILE_SIZE, TILE_SIZE)
@@ -34,7 +31,8 @@ class EnemyState extends LiveTileState {
         ctx.strokeRect(
             this.x,
             this.y,
-            (TILE_SIZE * this.timePast) / this.#maxTime,
+            (TILE_SIZE * this.#lifeTimer.getTime()) /
+                this.#lifeTimer.getTimePeriod(),
             1
         )
     }

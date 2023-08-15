@@ -1,11 +1,15 @@
 'use strict'
 class Player extends GameObject {
+    #recoverTimer
+    #isRecovering
+
     constructor(x, y, levelHandler) {
         super(x, y)
         this.levelHandler = levelHandler
         this.objId = 'PLAYER'
         this.shouldJump = false
-        this.recoveringTime = 0
+        this.#recoverTimer = null
+        this.#isRecovering = false
     }
 
     tick(delta) {
@@ -15,9 +19,7 @@ class Player extends GameObject {
         this.y += this.velY * delta
 
         //Recovering timer
-        if (this.recoveringTime > 0) {
-            this.recoveringTime -= delta
-        }
+        this.#recoverTimer?.updateTime(delta)
 
         // Gravity
         this.velY += 10
@@ -54,10 +56,15 @@ class Player extends GameObject {
                         PLAYER_WIDTH,
                         PLAYER_HEIGHT
                     ) &&
-                    this.recoveringTime <= 0
+                    !this.#isRecovering
                 ) {
                     this.levelHandler.lifeCount--
-                    this.recoveringTime = 5
+
+                    this.#isRecovering = true
+                    this.#recoverTimer = new Timer(RECOVERY_TIME, () => {
+                        this.#isRecovering = false
+                        this.#recoverTimer = null
+                    })
                 }
             }
             if (obj.objId === 'TILE') {
@@ -131,8 +138,7 @@ class Player extends GameObject {
                     )
                 ) {
                     if (obj.isHidingCoin) {
-                        obj.x = GameLogic.getRandomGridX()
-                        obj.y = GameLogic.getRandomGridY()
+                        ;[obj.x, obj.y] = GameLogic.getRandomGridPoint()
                         obj.setState('COIN')
                     } else {
                         this.levelHandler.deleteObject(index)
@@ -148,11 +154,7 @@ class Player extends GameObject {
     }
 
     render(ctx) {
-        if (this.recoveringTime > 0) {
-            ctx.fillStyle = 'lightblue'
-        } else {
-            ctx.fillStyle = 'blue'
-        }
+        ctx.fillStyle = this.#isRecovering ? 'lightblue' : 'blue'
         ctx.fillRect(this.x, this.y, PLAYER_WIDTH, PLAYER_HEIGHT)
 
         // Tile place
@@ -168,7 +170,9 @@ class Player extends GameObject {
         ctx.strokeRect(
             this.x,
             this.y,
-            (PLAYER_WIDTH * this.recoveringTime) / 5,
+            (PLAYER_WIDTH *
+                (RECOVERY_TIME - (this.#recoverTimer?.getTime() || 0))) /
+                RECOVERY_TIME,
             1
         )
     }

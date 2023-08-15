@@ -1,28 +1,24 @@
 'use strict'
 
 class CoinState extends LiveTileState {
-    #maxTime
+    #timer
     constructor(tileHandler) {
         super(tileHandler)
         this.x = tileHandler.x
         this.y = tileHandler.y
-        this.#maxTime = 10
-    }
-    tick(delta) {
-        this.timePast += delta
-        if (this.timePast >= this.#maxTime) {
-            this.tileHandler.x = GameLogic.getRandomGridX()
-            this.tileHandler.y = GameLogic.getRandomGridY()
+
+        this.#timer = new Timer(COIN_TIME, () => {
+            ;[this.tileHandler.x, this.tileHandler.y] =
+                GameLogic.getRandomGridPoint()
+            const [x, y] = GameLogic.getRandomGridPoint()
             this.tileHandler.levelHandler.gameObjects.push(
-                new LiveTile(
-                    GameLogic.getRandomGridX(),
-                    GameLogic.getRandomGridY(),
-                    this.tileHandler.levelHandler,
-                    false
-                )
+                new LiveTile(x, y, this.tileHandler.levelHandler, false)
             )
             this.tileHandler.setState('TILE')
-        }
+        })
+    }
+    tick(delta) {
+        this.#timer.updateTime(delta)
     }
     render(ctx) {
         ctx.fillStyle = 'gold'
@@ -31,7 +27,7 @@ class CoinState extends LiveTileState {
         ctx.strokeRect(
             this.x,
             this.y,
-            (TILE_SIZE * this.timePast) / this.#maxTime,
+            (TILE_SIZE * this.#timer.getTime()) / this.#timer.getTimePeriod(),
             1
         )
     }

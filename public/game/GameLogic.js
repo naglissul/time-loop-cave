@@ -1,3 +1,4 @@
+'use strict'
 class GameLogic {
     static isRectsColliding(x1, y1, w1, h1, x2, y2, w2, h2) {
         return (
@@ -40,52 +41,56 @@ class GameLogic {
     }
 
     //TODO: For new pos, check the existing objects. Taken pos list
-    static getRandomGridX() {
-        return Math.floor(Math.random() * GRID_WIDTH) * TILE_SIZE
+    static getRandomGridPoint() {
+        return [
+            Math.floor(Math.random() * GRID_WIDTH) * TILE_SIZE,
+            Math.floor(Math.random() * GRID_HEIGHT) * TILE_SIZE,
+        ]
     }
 
-    static getRandomGridY() {
-        return Math.floor(Math.random() * GRID_HEIGHT) * TILE_SIZE
-    }
-
-    static getRandomEnemyMoveX(x) {
-        let dir
+    static getRandomEnemyMove([x, y]) {
+        let dirX
         if (x === CANVAS_WIDTH - TILE_SIZE) {
-            dir = Math.floor(Math.random() * 2) + 1
+            dirX = Math.floor(Math.random() * 2) + 1
         } else if (x === 0) {
-            dir = Math.floor(Math.random() * 2)
+            dirX = Math.floor(Math.random() * 2)
         } else {
-            dir = Math.floor(Math.random() * 3)
+            dirX = Math.floor(Math.random() * 3)
         }
-        if (dir === 0) {
-            return x + TILE_SIZE
-        } else if (dir === 1) {
-            return x
-        } else if (dir === 2) {
-            return x - TILE_SIZE
-        } else {
-            console.error('sth wrong with Math.random()')
-        }
-    }
 
-    static getRandomEnemyMoveY(y) {
-        let dir
+        let dirY
         if (y === CANVAS_HEIGHT - TILE_SIZE) {
-            dir = Math.floor(Math.random() * 2) + 1
+            dirY = Math.floor(Math.random() * 2) + 1
         } else if (y === 0) {
-            dir = Math.floor(Math.random() * 2)
+            dirY = Math.floor(Math.random() * 2)
         } else {
-            dir = Math.floor(Math.random() * 3)
+            dirY = Math.floor(Math.random() * 3)
         }
-        if (dir === 0) {
-            return y + TILE_SIZE
-        } else if (dir === 1) {
-            return y
-        } else if (dir === 2) {
-            return y - TILE_SIZE
+
+        let retX
+        let retY
+
+        if (dirX === 0) {
+            retX = x + TILE_SIZE
+        } else if (dirX === 1) {
+            retX = x
+        } else if (dirX === 2) {
+            retX = x - TILE_SIZE
         } else {
             console.error('sth wrong with Math.random()')
         }
+
+        if (dirY === 0) {
+            retY = y + TILE_SIZE
+        } else if (dirY === 1) {
+            retY = y
+        } else if (dirY === 2) {
+            retY = y - TILE_SIZE
+        } else {
+            console.error('sth wrong with Math.random()')
+        }
+
+        return [retX, retY]
     }
 
     //TODO: Add a timing method - event based timing

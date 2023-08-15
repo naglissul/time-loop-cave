@@ -2,6 +2,7 @@
 class Game {
     #ctx
     #stateHandler
+    #events
     running
 
     constructor(canvas) {
@@ -11,20 +12,10 @@ class Game {
         this.#ctx.scale(SCALE_FACTOR, SCALE_FACTOR)
 
         this.#stateHandler = new StateHandler()
-        this.#initListeners()
+        this.#events = new Events(this, this.#stateHandler)
 
         this.running = true
         this.#gameLoop()
-    }
-
-    #initListeners() {
-        addEventListener('keydown', (event) =>
-            this.#stateHandler.keyPressed(event.code)
-        )
-        addEventListener('keyup', (event) =>
-            this.#stateHandler.keyReleased(event.code)
-        )
-        addEventListener('beforeunload', (event) => this.#exit(event))
     }
 
     #gameLoop() {
@@ -44,7 +35,7 @@ class Game {
         update(performance.now())
     }
 
-    #exit(e) {
+    exit(e) {
         removeEventListener('keydown', (event) =>
             this.#stateHandler.keyPressed(event.code)
         )
