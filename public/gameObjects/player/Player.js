@@ -42,7 +42,6 @@ class Player extends GameObject {
         }
 
         // Tile collision
-        // FIXME: Collision issues for sometimes enemy and food
         this.levelHandler.gameObjects.forEach((obj, index) => {
             if (obj.objId === 'ENEMY') {
                 if (
