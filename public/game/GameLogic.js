@@ -1,14 +1,5 @@
 'use strict'
 class GameLogic {
-    static isRectsColliding(x1, y1, w1, h1, x2, y2, w2, h2) {
-        return (
-            ((x1 + w1 >= x2 && x1 + w1 <= x2 + w2) ||
-                (x1 >= x2 && x1 <= x2 + w2)) &&
-            ((y1 + h1 >= y2 && y1 + h1 <= y2 + h2) ||
-                (y1 >= y2 && y1 <= y2 + h2))
-        )
-    }
-
     static whichRectSideColliding(x1, y1, w1, h1, x2, y2, w2, h2) {
         if (x1 >= x2 && y1 >= y2 && x1 - x2 >= y1 - y2) {
             return 'right'
@@ -48,6 +39,7 @@ class GameLogic {
         ]
     }
 
+    //TODO: here too, check for existing tiles
     static getRandomEnemyMove([x, y]) {
         let dirX
         if (x === CANVAS_WIDTH - TILE_SIZE) {
@@ -92,7 +84,5 @@ class GameLogic {
 
         return [retX, retY]
     }
-
-    //TODO: Add a timing method - event based timing
     //TODO: Add a verctor data structure
 }

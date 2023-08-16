@@ -8,6 +8,7 @@ class CoinState extends LiveTileState {
         this.y = tileHandler.y
 
         this.#timer = new Timer(COIN_TIME, () => {
+            // FIXME: here also can overlap with other tiles
             ;[this.tileHandler.x, this.tileHandler.y] =
                 GameLogic.getRandomGridPoint()
             const [x, y] = GameLogic.getRandomGridPoint()

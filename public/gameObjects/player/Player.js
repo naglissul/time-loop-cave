@@ -46,15 +46,13 @@ class Player extends GameObject {
         this.levelHandler.gameObjects.forEach((obj, index) => {
             if (obj.objId === 'ENEMY') {
                 if (
-                    GameLogic.isRectsColliding(
+                    new Rect(
                         this.x,
                         this.y,
-                        TILE_SIZE,
-                        TILE_SIZE,
-                        obj.x,
-                        obj.y,
                         PLAYER_WIDTH,
                         PLAYER_HEIGHT
+                    ).isColliding(
+                        new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE)
                     ) &&
                     !this.#isRecovering
                 ) {
@@ -66,19 +64,14 @@ class Player extends GameObject {
                         this.#recoverTimer = null
                     })
                 }
-            }
-            if (obj.objId === 'TILE') {
+            } else if (obj.objId === 'TILE') {
                 if (
-                    GameLogic.isRectsColliding(
+                    new Rect(
                         this.x,
                         this.y,
                         PLAYER_WIDTH,
-                        PLAYER_HEIGHT,
-                        obj.x,
-                        obj.y,
-                        TILE_SIZE,
-                        TILE_SIZE
-                    )
+                        PLAYER_HEIGHT
+                    ).isColliding(new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE))
                 ) {
                     this.text = GameLogic.whichRectSideColliding(
                         this.x,
@@ -106,36 +99,26 @@ class Player extends GameObject {
                         this.x = obj.x - PLAYER_WIDTH
                     }
                 }
-            }
-            if (obj.objId === 'COIN') {
+            } else if (obj.objId === 'COIN') {
                 if (
-                    GameLogic.isRectsColliding(
-                        obj.x,
-                        obj.y,
-                        PLAYER_WIDTH,
-                        PLAYER_HEIGHT,
+                    new Rect(
                         this.x,
                         this.y,
-                        TILE_SIZE,
-                        TILE_SIZE
-                    )
+                        PLAYER_WIDTH,
+                        PLAYER_HEIGHT
+                    ).isColliding(new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE))
                 ) {
                     this.levelHandler.coinCount += 1
                     this.levelHandler.deleteObject(index)
                 }
-            }
-            if (obj.objId === 'FOOD') {
+            } else if (obj.objId === 'FOOD') {
                 if (
-                    GameLogic.isRectsColliding(
+                    new Rect(
                         this.x,
                         this.y,
-                        TILE_SIZE,
-                        TILE_SIZE,
-                        obj.x,
-                        obj.y,
                         PLAYER_WIDTH,
                         PLAYER_HEIGHT
-                    )
+                    ).isColliding(new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE))
                 ) {
                     if (obj.isHidingCoin) {
                         ;[obj.x, obj.y] = GameLogic.getRandomGridPoint()

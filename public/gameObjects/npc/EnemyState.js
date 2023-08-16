@@ -14,6 +14,7 @@ class EnemyState extends LiveTileState {
             this.tileHandler.y = this.y
             this.tileHandler.setState('FOOD')
         })
+        //FIXME: when moving around, overlaps with other objects/tiles
         this.#moveTimer = new Timer(ENEMY_MOVE_TIME, () => {
             ;[this.x, this.y] = GameLogic.getRandomEnemyMove([this.x, this.y])
         })
