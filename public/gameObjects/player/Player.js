@@ -72,15 +72,13 @@ class Player extends GameObject {
                         PLAYER_HEIGHT
                     ).isColliding(new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE))
                 ) {
-                    this.text = GameLogic.whichRectSideColliding(
+                    this.text = new Rect(
                         this.x,
                         this.y,
                         PLAYER_WIDTH,
-                        PLAYER_HEIGHT,
-                        obj.x,
-                        obj.y,
-                        TILE_SIZE,
-                        TILE_SIZE
+                        PLAYER_HEIGHT
+                    ).collidingSide(
+                        new Rect(obj.x, obj.y, TILE_SIZE, TILE_SIZE)
                     )
                     if (this.text === 'top') {
                         this.velY = 0
